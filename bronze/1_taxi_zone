@@ -1,0 +1,16 @@
+
+CREATE EXTERNAL TABLE bronze.taxi_zone
+(
+   LocationID SMALLINT,
+             Borough VARCHAR(15),
+             Zone VARCHAR(50) ,
+             service_zone VARCHAR(15)
+)
+WITH
+(
+    LOCATION = 'raw/taxi_zone.csv',
+    DATA_SOURCE = nyc_taxi_src,
+    FILE_FORMAT = CSV_File_Format
+)
+
+SELECT * FROM bronze.taxi_zone

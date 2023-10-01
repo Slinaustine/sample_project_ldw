@@ -1,0 +1,24 @@
+--create database
+
+Use Master
+GO
+
+create DATABASE nyc_taxi_ldw
+GO
+
+-- Alter database
+
+ALTER DATABASE nyc_taxi_ldw collate Latin1_General_100_BIN2_UTF8
+
+--Create schema
+USE nyc_taxi_ldw
+
+CREATE SCHEMA bronze
+GO
+
+CREATE SCHEMA silver
+GO
+
+
+CREATE SCHEMA gold
+GO

@@ -1,0 +1,75 @@
+--create external datasource
+
+CREATE EXTERNAL DATA SOURCE nyc_taxi_src
+WITH
+(
+    LOCATION = 'https://synapsecoursedll2.dfs.core.windows.net/nyc-taxi-data'
+);
+
+--create external file format
+use nyc_taxi_ldw;
+
+CREATE EXTERNAL FILE FORMAT CSV_File_Format
+WITH (
+    FORMAT_TYPE = DELIMITEDTEXT,
+    FORMAT_OPTIONS (
+        FIELD_TERMINATOR = ',',
+        STRING_DELIMITER = '"',
+        FIRST_ROW = 2,
+        USE_TYPE_DEFAULT = FALSE,
+        ENCODING = 'UTF8',
+        PARSER_VERSION = '2.0'
+    )
+);
+
+--create tsv file format
+
+use nyc_taxi_ldw;
+
+CREATE EXTERNAL FILE FORMAT CSV_File_Format
+WITH (
+    FORMAT_TYPE = DELIMITEDTEXT,
+    FORMAT_OPTIONS (
+        FIELD_TERMINATOR = ',',
+        STRING_DELIMITER = '"',
+        FIRST_ROW = 2,
+        USE_TYPE_DEFAULT = FALSE,
+        ENCODING = 'UTF8',
+        PARSER_VERSION = '2.0'
+    )
+);
+--Create file format tsv_file_format for parser version 2.0
+
+use nyc_taxi_ldw;
+IF NOT EXISTS (SELECT * FROM sys.external_file_formats where name ='TSV_File_Format_ps2')
+CREATE EXTERNAL FILE FORMAT TSV_File_Format_ps2
+WITH (
+    FORMAT_TYPE = DELIMITEDTEXT,
+    FORMAT_OPTIONS (
+        FIELD_TERMINATOR = '\t',
+        STRING_DELIMITER = '"',
+        FIRST_ROW = 2,
+        USE_TYPE_DEFAULT = FALSE,
+        ENCODING = 'UTF8',
+        PARSER_VERSION = '2.0'
+    )
+);
+
+-- Create parquet file format
+IF NOT EXISTS (SELECT * FROM sys.external_file_formats where name ='parquet_file_format')
+
+CREATE EXTERNAL FILE FORMAT parquet_file_format
+WITH (
+    FORMAT_TYPE = PARQUET,
+    DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'
+
+);
+
+-- Create delta file format
+IF NOT EXISTS (SELECT * FROM sys.external_file_formats where name ='delta_File_Format')
+
+CREATE EXTERNAL FILE FORMAT delta_File_Format
+WITH (
+    FORMAT_TYPE = DELTA,
+    DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'
+);
